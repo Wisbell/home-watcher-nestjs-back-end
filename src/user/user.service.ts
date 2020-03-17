@@ -1,3 +1,12 @@
+/*
+  TODO:
+    - Get one User
+    - Get all users if admin
+    - Create user
+    - Update user
+    - Delete user
+*/
+
 import { Injectable } from '@nestjs/common';
 
 export type User = any;
