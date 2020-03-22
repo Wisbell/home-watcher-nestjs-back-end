@@ -1,4 +1,4 @@
-// TODO: Remove thsi if not needed
+// TODO: Remove this if not needed
 
 import { Injectable } from '@nestjs/common';
 
