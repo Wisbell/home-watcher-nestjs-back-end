@@ -1,64 +1,74 @@
-import { Injectable } from '@nestjs/common';
-import { User } from './user.model';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { User } from './user.entity';
+import { UserRepository } from './user.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-  private readonly users: User[];
+  private readonly users: User[]; // TODO: Remove this array
 
-  constructor() {
-    this.users = [
-      {
-        userId: 1,
-        username: 'john',
-        password: 'changeme',
-        role: 'admin'
-      },
-      {
-        userId: 2,
-        username: 'chris',
-        password: 'secret',
-        role: 'basic'
-      },
-      {
-        userId: 3,
-        username: 'maria',
-        password: 'guess',
-        role: 'basic'
-      },
-    ];
+  constructor(
+    @InjectRepository(UserRepository)
+    private userRepository: UserRepository
+  ) {}
+
+  async getAllUsers(): Promise<User[]> {
+    return await this.userRepository.find();
   }
 
-  async getAll(): Promise<User[] | undefined> {
-    return this.users;
+  async getUser(id: string): Promise<User> {
+    const userToGet = await this.userRepository.findOne(id);
+
+    if(!userToGet)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return userToGet;
   }
 
-  async getOne(id: string): Promise<User | undefined> {
-    return this.users.find( user => user.userId === parseInt(id) );
-  }
-
+  // TODO: remove this function
   async getOneByUsername(username: string): Promise<User | undefined> {
     return this.users.find( user => user.username === username );
   }
 
-  async create(user: User): Promise<User | undefined> {
-    user.userId = User.getMaxId(this.users);
-    user.role = 'basic';
-    this.users.push(user);
-    return user;
+  async createUser(user: User): Promise<User> {
+    const checkIfUserExists: User = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.username = :username', { username: user.username })
+      .getOne();
+
+    if(checkIfUserExists)
+      throw new HttpException('User with specified username already exists', HttpStatus.CONFLICT);
+
+    return await this.userRepository.save(user);
   }
 
-  async update(updatedUser: User): Promise<User | undefined> {
-    const oldUserData = this.users.find( user => user.userId === updatedUser.userId );
-    this.delete( oldUserData.userId.toString() );
-    this.users.push(updatedUser);
-    return updatedUser;
+  // TODO: Don't allow updating of username/password... yet
+  async updateUser(id: string, updatedUser: User): Promise<User> {
+    if(Number(id) !== updatedUser.id)
+      throw new HttpException('Endpoint user id does not match user entity id', HttpStatus.CONFLICT);
+
+    let userToUpdate = await this.userRepository.findOne(id);
+
+    if(!userToUpdate)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    userToUpdate.role = updatedUser.role;
+
+    return await this.userRepository.save(userToUpdate);
   }
 
   async deleteByUsername(username: string): Promise<void> {
     this.users.filter( user => user.username !== username );
   }
 
-  async delete(id: string): Promise<void> {
-    this.users.filter( user => user.userId !== parseInt(id) );
+  async deleteUser(id: string): Promise<User> {
+    const userToRemove = await this.userRepository.findOne(id);
+
+    if(!userToRemove)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    await this.userRepository.remove(userToRemove);
+
+    return userToRemove;
   }
 }
