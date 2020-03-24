@@ -7,7 +7,7 @@ export class User {
     this.password = password;
   }
 
-  userId: number;
+  id: number;
   username: string;
   password: string;
   role: string; // admin | basic
@@ -17,8 +17,8 @@ export class User {
 
     if (users) {
       users.forEach( (user) => {
-        if (user.userId > maxId)
-          maxId = user.userId;
+        if (user.id > maxId)
+          maxId = user.id;
       });
 
       return maxId + 1;
