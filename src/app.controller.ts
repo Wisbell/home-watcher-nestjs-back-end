@@ -8,7 +8,7 @@ import { AuthService } from './auth/auth.service';
 export class AppController {
   constructor() {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     console.log('profile called!')
