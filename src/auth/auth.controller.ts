@@ -9,14 +9,14 @@ export class AuthController {
     private readonly authService: AuthService
     ) {}
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
     console.log('req.user', req.user);
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('loggedIn')
   async loggedIn() {
     return { loggedIn: true };
