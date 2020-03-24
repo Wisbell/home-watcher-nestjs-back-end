@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthCredentialsDto } from '../auth/auth-credentials.dto';
 
 @Injectable()
 export class UserService {
@@ -26,9 +27,9 @@ export class UserService {
   }
 
   // TODO: remove this function
-  async getOneByUsername(username: string): Promise<User | undefined> {
-    return this.users.find( user => user.username === username );
-  }
+  // async getOneByUsername(username: string): Promise<User | undefined> {
+  //   return this.users.find( user => user.username === username );
+  // }
 
   async createUser(user: User): Promise<User> {
     const checkIfUserExists: User = await this.userRepository
@@ -70,5 +71,17 @@ export class UserService {
     await this.userRepository.remove(userToRemove);
 
     return userToRemove;
+  }
+
+  async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+    const { username, password } = authCredentialsDto;
+
+    const user: User = await this.userRepository.findOne({ username });
+
+    if (user && await user.validatePassword(password)) {
+      return user.username;
+    } else {
+      return null;
+    }
   }
 }
