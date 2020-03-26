@@ -2,11 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthCredentialsDto } from '../auth/auth-credentials.dto';
+import { JwtPayload } from '../auth/jwt-payload.interface';
 
 @Injectable()
 export class UserService {
-  private readonly users: User[]; // TODO: Remove this array
-
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository
@@ -25,9 +25,13 @@ export class UserService {
     return userToGet;
   }
 
-  // TODO: remove this function
-  async getOneByUsername(username: string): Promise<User | undefined> {
-    return this.users.find( user => user.username === username );
+  async getUserByUsername(username: string): Promise<User> {
+    const userToGet = await this.userRepository.findOne({ username });
+
+    if(!userToGet)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return userToGet;
   }
 
   async createUser(user: User): Promise<User> {
@@ -57,10 +61,6 @@ export class UserService {
     return await this.userRepository.save(userToUpdate);
   }
 
-  async deleteByUsername(username: string): Promise<void> {
-    this.users.filter( user => user.username !== username );
-  }
-
   async deleteUser(id: string): Promise<User> {
     const userToRemove = await this.userRepository.findOne(id);
 
@@ -70,5 +70,19 @@ export class UserService {
     await this.userRepository.remove(userToRemove);
 
     return userToRemove;
+  }
+
+  async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<JwtPayload> {
+    const { username, password } = authCredentialsDto;
+
+    const user: User = await this.userRepository.findOne({ username });
+
+    if (user && await user.validatePassword(password)) {
+      const { username, role } = user;
+      const jwtPayload: JwtPayload = { username, role }
+      return jwtPayload;
+    } else {
+      return null;
+    }
   }
 }
