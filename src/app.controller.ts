@@ -11,4 +11,9 @@ export class AppController {
     console.log('profile called!')
     return req.user;
   }
+
+  @Get('ping')
+  pingPong() {
+    return 'pong';
+  }
 }
