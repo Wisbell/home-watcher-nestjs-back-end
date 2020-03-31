@@ -6,8 +6,7 @@ import { User } from './user.entity';
 export class UserController {
   constructor(
     private readonly userService: UserService
-    ) {}
-
+  ) {}
 
   @Get()
   getAll() {
@@ -33,5 +32,4 @@ export class UserController {
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
-
 }
