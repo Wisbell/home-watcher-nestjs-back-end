@@ -26,10 +26,4 @@ export class AuthController {
   async loggedIn(): Promise< { loggedIn: boolean }> {
     return { loggedIn: true }
   }
-
-  @UseGuards(AuthGuard())
-  @Post('test')
-  async test(@Req() req): Promise<void> {
-    console.log('req' ,req)
-  }
 }
