@@ -11,11 +11,11 @@ export class ImageService {
   ) {}
 
   async getAllImages(): Promise<Image[]> {
-    return await this.imageRepository.find();
+    return await this.imageRepository.find({ relations: [ "incident" ]});
   }
 
   async getImage(id: string): Promise<Image> {
-    const imageToGet = await this.imageRepository.findOne(id);
+    const imageToGet = await this.imageRepository.findOne(id, { loadRelationIds: true });
 
     if(!imageToGet)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
