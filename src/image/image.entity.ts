@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Incident } from '../incident/incident.entity';
 
 @Entity()
 export class Image extends BaseEntity {
@@ -13,4 +14,7 @@ export class Image extends BaseEntity {
 
   @Column()
   image: string; // TODO: Change to imageBase64
+
+  @OneToOne(type => Incident, incident => incident.image)
+  incident: Incident;
 }
