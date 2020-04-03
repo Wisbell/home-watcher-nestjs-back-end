@@ -1,10 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ImageService } from '../image/image.service';
 import { Incident } from './incident.entity';
 import { IncidentDto } from './incident.dto';
-import { ImageService } from '../image/image.service';
-import { Image } from '../image/image.entity';
 
 @Injectable()
 export class IncidentService {
@@ -38,7 +37,7 @@ export class IncidentService {
     );
   }
 
-  async create(newIncident: IncidentDto): Promise<IncidentDto> {
+  async create(newIncident: IncidentDto): Promise<Incident> {
     newIncident.dateCreated = new Date().toString();
 
     const incidentToSave = IncidentDto.toIncident(
@@ -46,16 +45,7 @@ export class IncidentService {
       await this.imageService.getImage(newIncident.imageId)
     );
 
-    const savedIncident: Incident = await this.incidentRepository.save(incidentToSave);
-
-    const { id, text, dateCreated, image } = savedIncident;
-
-    return new IncidentDto(
-      id.toString(),
-      text,
-      dateCreated,
-      image.id.toString()
-    );
+    return await this.incidentRepository.save(incidentToSave);
   }
 
   async update(id: string, updatedIncidentDto: IncidentDto): Promise<Incident> {
