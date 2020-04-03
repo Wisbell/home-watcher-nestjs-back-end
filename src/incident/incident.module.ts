@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { IncidentController } from './incident.controller';
-import { IncidentService } from './incident.service';
-import { Incident } from './incident.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
+import { IncidentController } from './incident.controller';
+import { IncidentService } from './incident.service';
 import { ImageService } from '../image/image.service';
+import { Incident } from './incident.entity';
 import { Image } from '../image/image.entity';
 
 @Module({
@@ -13,7 +13,9 @@ import { Image } from '../image/image.entity';
     TypeOrmModule.forFeature([Image]),
     PassportModule.register({ defaultStrategy: 'jwt' })
   ],
-  controllers: [IncidentController],
+  controllers: [
+    IncidentController
+  ],
   providers: [
     IncidentService,
     ImageService
