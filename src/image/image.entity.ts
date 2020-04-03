@@ -13,7 +13,7 @@ export class Image extends BaseEntity {
   name: string; // TODO: Change to fileName?
 
   @Column()
-  image: string; // TODO: Change to imageBase64
+  image: string; // TODO: Change name to imageBase64
 
   @OneToOne(type => Incident, incident => incident.image)
   incident: Incident;
