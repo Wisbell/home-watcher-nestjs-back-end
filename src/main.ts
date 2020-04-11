@@ -11,7 +11,8 @@ async function bootstrap() {
     app.enableCors();
   } else {
     // app.enableCors({ origin: serverConfig.origin });
-    throw new Error('Add code above');
+    // throw new Error('Add code above');
+    app.enableCors();
   }
 
   app. use( bodyParser. json( { limit: '10MB' } ) );
