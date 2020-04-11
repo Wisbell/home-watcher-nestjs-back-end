@@ -19,9 +19,6 @@ export class User extends BaseEntity {
   @Column()
   role: string; // 'admin' or 'basic'
 
-  // @OneToMany(type => Task, task => task.user, { eager: true })
-  // tasks: Task[];
-
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
     return hash === this.password;
