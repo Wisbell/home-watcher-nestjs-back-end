@@ -1,0 +1,8 @@
+[
+  {
+      "username": "admin",
+      "password": "$2b$10$HwqGLgN22DyXQ1tyFGCiC.f6hiV/fQFqwZcvB7xXrBFMQ4JOF0ld6",
+      "salt": "$2b$10$HwqGLgN22DyXQ1tyFGCiC.",
+      "role": "admin"
+   }
+]

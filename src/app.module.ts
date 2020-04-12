@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './config/typeorm.config';
+import * as typeOrmConfig from './config/typeorm.config';
 import { ImageModule } from './image/image.module';
 import { IncidentModule } from './incident/incident.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { IncidentModule } from './incident/incident.module';
     UserModule,
     AuthModule,
     ImageModule,
-    IncidentModule
+    IncidentModule,
+    SeederModule
   ],
   controllers: [AppController],
   providers: [AppService],
