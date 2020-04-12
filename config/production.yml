@@ -1,5 +1,9 @@
 server:
-  origin: http://nestjs-task-management-frontend.s3-website-eu-west-1.amazonaws.com
+  origin: https://home-watcher-api.herokuapp.com/
 
 db:
+  database: 'da2ppigt7jt0a4'
+  host: 'ec2-34-197-212-240.compute-1.amazonaws.com'
+  username: 'ockxzynhovsobs'
+  password: 'd1a4ba869784a42d593a7b97a3f0406fbfd8fefd2c320af64f8fc7cc4eb650e9'
   synchronize: false

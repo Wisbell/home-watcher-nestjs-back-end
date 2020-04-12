@@ -1,4 +1,5 @@
 db:
+  database: 'home-watcher'
   host: 'localhost'
   username: 'postgres'
   password: 'postgres'
