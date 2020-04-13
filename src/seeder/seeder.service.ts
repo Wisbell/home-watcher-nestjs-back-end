@@ -2,37 +2,41 @@ import { Injectable } from '@nestjs/common';
 import { getConnection } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Image } from '../image/image.entity';
+import { Incident } from '../incident/incident.entity';
 import * as userData from './data/users.json';
 import * as imageData from './data/images.json';
+import * as incidentData from './data/incidents.json';
 import { UserService } from '../user/user.service';
 import { ImageService } from '../image/image.service';
+import { IncidentService } from '../incident/incident.service';
+import { IncidentDto } from '../incident/incident.dto';
 
 @Injectable()
 export class SeederService {
   constructor(
     private userService: UserService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private incidentService: IncidentService
   ) {}
 
-  seedUsers(): void {
-    userData.forEach(async (userJSON) => {
-
-      const { username, password, salt, role } = userJSON;
+  async seedUsers(): Promise<void> {
+    for (const seedUser of userData) {
+      const { username, password, salt, role } = seedUser;
 
       const user = {
         username,
         password,
         salt,
-        role,
+        role
       }
 
       await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into(User)
-        .values(user)
-        .execute();
-    });
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values(user)
+      .execute();
+    }
   }
 
   async deleteUsers(): Promise<void> {
@@ -43,24 +47,17 @@ export class SeederService {
     });
   }
 
-  seedImages(): void {
-    imageData.forEach(async (imageJSON) => {
+  async seedImages(): Promise<void> {
+    for (const seedImage of imageData) {
+      const { dateCreated, name, image } = seedImage;
 
-      const { dateCreated, name, image } = imageJSON;
+      const newSeedImage = new Image();
+      newSeedImage.dateCreated = dateCreated;
+      newSeedImage.name = name;
+      newSeedImage.image = image;
 
-      const newImage = {
-        dateCreated,
-        name,
-        image
-      }
-
-      await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into(Image)
-        .values(newImage)
-        .execute();
-    });
+      await this.imageService.saveImage(newSeedImage);
+    }
   }
 
   async deleteImages(): Promise<void> {
@@ -71,18 +68,39 @@ export class SeederService {
     });
   }
 
-  seedIncidents(): void {
+  async seedIncidents(): Promise<void> {
+    for (const seedInicdent of incidentData) {
+      const { dateCreated, text, imageId } = seedInicdent;
 
+      const newIncident = new IncidentDto(
+        null,
+        dateCreated,
+        text,
+        imageId
+      );
+
+      await this.incidentService.create(newIncident);
+    }
+  }
+
+  async deleteIncidents(): Promise<void> {
+    const allIncidents = await this.incidentService.getAll();
+
+    allIncidents.forEach(async (incident: Incident) => {
+      await this.incidentService.delete(incident.id.toString());
+    });
   }
 
   private async seedAll(): Promise<void> {
     await this.seedUsers();
     await this.seedImages();
+    await this.seedIncidents();
   }
 
   private async deleteAll(): Promise<void> {
-    await this.deleteUsers();
+    await this.deleteIncidents();
     await this.deleteImages();
+    await this.deleteUsers();
   }
 
   async resetDatabase(): Promise<void> {
