@@ -18,7 +18,7 @@ export class ImageService {
     const imageToGet = await this.imageRepository.findOne(id, { loadRelationIds: true });
 
     if(!imageToGet)
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Image not found', HttpStatus.NOT_FOUND);
 
     return imageToGet;
   }
