@@ -7,3 +7,6 @@ db:
   username: 'ockxzynhovsobs'
   password: 'd1a4ba869784a42d593a7b97a3f0406fbfd8fefd2c320af64f8fc7cc4eb650e9'
   synchronize: false
+
+jwt:
+  secret: 'topSecret51'
