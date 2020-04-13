@@ -74,8 +74,8 @@ export class SeederService {
 
       const newIncident = new IncidentDto(
         null,
-        dateCreated,
         text,
+        dateCreated,
         imageId
       );
 
