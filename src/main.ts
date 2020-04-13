@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
 import * as bodyParser from 'body-parser';
+import { SeederService } from './seeder/seeder.service';
 
 async function bootstrap() {
   const serverConfig = config.get('server');
@@ -15,7 +16,10 @@ async function bootstrap() {
     app.enableCors();
   }
 
-  app. use( bodyParser. json( { limit: '10MB' } ) );
+  app.use( bodyParser. json( { limit: '10MB' } ) );
+
+  const seederService = app.get(SeederService);
+  seederService.resetDatabase();
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);

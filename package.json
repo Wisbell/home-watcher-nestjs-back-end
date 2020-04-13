@@ -21,7 +21,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "heroku-postbuild": "npm install --production --no-shrinkwrap && npm run build",
-    "heroku:logs": "heroku logs --tail -a home-watcher-api"
+    "heroku:logs": "heroku logs --tail -a home-watcher-api",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/config/typeorm.config.ts",
+    "typeorm:migration:generate": "npm run typeorm migration:generate -- -n",
+    "typeorm:migration:run": "npm run typeorm migration:run",
+    "typeorm:migration:revert": "npm run typeorm migration:revert",
+    "typeorm:migration:show": "npm run typeorm migration:show"
   },
   "dependencies": {
     "@nestjs/common": "^6.10.14",

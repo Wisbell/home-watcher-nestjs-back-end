@@ -13,8 +13,11 @@ export class Incident extends BaseEntity {
   @Column()
   text: string;
 
+  @Column({ type: "int", nullable: false })
+  imageId: number;
+
   @OneToOne(type => Image, image => image.incident)
-  @JoinColumn()
+  @JoinColumn({ name: "imageId" })
   image: Image;
 
   toDto(): IncidentDto {

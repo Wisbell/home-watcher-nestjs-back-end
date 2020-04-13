@@ -2,6 +2,7 @@ import { Controller, Get, Param, Post, Body, Delete } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { Image } from './image.entity';
 
+// TODO: Protect route
 @Controller('images')
 export class ImageController {
   constructor(

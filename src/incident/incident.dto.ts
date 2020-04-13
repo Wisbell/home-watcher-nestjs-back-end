@@ -42,4 +42,16 @@ export class IncidentDto {
     incident.image = image || undefined;
     return incident;
   }
+
+  static toIncidentUpdated(incidentDto: IncidentDto): Incident {
+    console.log('toIncidentUpdated before', incidentDto);
+    const incident = new Incident();
+    incident.id = incidentDto.id ? parseInt(incidentDto.id) : undefined;
+    incident.text = incidentDto.text;
+    incident.dateCreated = incidentDto.dateCreated;
+    incident.imageId = parseInt(incidentDto.imageId);
+
+    console.log('toIncidentUpdated after', incident);
+    return incident;
+  }
 }
