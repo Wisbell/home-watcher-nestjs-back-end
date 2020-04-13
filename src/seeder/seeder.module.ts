@@ -6,11 +6,14 @@ import { UserService } from '../user/user.service';
 import { UserRepository } from '../user/user.repository';
 import { ImageService } from '../image/image.service';
 import { Image } from '../image/image.entity';
+import { Incident } from '../incident/incident.entity';
+import { IncidentService } from '../incident/incident.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
-    TypeOrmModule.forFeature([Image])
+    TypeOrmModule.forFeature([Image]),
+    TypeOrmModule.forFeature([Incident])
   ],
   controllers: [
     SeederController
@@ -18,7 +21,8 @@ import { Image } from '../image/image.entity';
   providers: [
     SeederService,
     UserService,
-    ImageService
+    ImageService,
+    IncidentService
   ]
 })
 export class SeederModule {}
