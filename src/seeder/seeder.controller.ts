@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Post, Get } from '@nestjs/common';
 import { SeederService } from './seeder.service';
 
 @Controller('seeder')
@@ -38,6 +38,16 @@ export class SeederController {
     }
     catch (error) {
       return { error: "Seeding of incident table failed" }
+    }
+  }
+
+  @Get('reset')
+  async resetDatabase() {
+    try {
+      this.seederService.resetDatabase();
+    }
+    catch (error) {
+      return { error: "Reset failed" }
     }
   }
 }

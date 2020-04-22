@@ -1,0 +1,4 @@
+- Create proper jwt key in production config
+- Remove production config from git
+- Finish testing
+- Protect images route
