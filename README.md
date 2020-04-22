@@ -1,12 +1,8 @@
 # <p align="center">Home Watcher Remake - Back End</p>
 
-
-
-
-
 ## Description
 
-A [Node.js](http://nodejs.org) API created with [Nest JS](https://nestjs.com) to interface with a [Postgres](https://www.postgresql.org) database.  Makes use of [TypeORM](https://typeorm.io/#/).
+A [Node.js](http://nodejs.org) API created with [Nest JS](https://nestjs.com) to interface with a [Postgres](https://www.postgresql.org) database.  Makes use of [TypeORM](https://typeorm.io/#/).  Back end for [Home Watcher Remake Angular application](https://github.com/Wisbell/home-watcher-remake-front-end#readme)
 
 ## Installation
 
